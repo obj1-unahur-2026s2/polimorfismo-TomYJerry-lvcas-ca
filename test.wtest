@@ -1,0 +1,62 @@
+import  tomYJerry.*
+
+describe "Pruebas de la historia de Tom y Jerry" {
+
+    test "Secuencia completa de la Parte 1 - Velocidad y Energia" {
+       
+        assert.equals(50, tom.energia())
+        assert.equals(10, tom.velocidadMaxima())
+
+        
+        tom.comer(jerry)
+        assert.equals(102, tom.energia())
+        assert.equals(15.2, tom.velocidadMaxima())
+
+        tom.correr(24)
+        assert.equals(90, tom.energia())
+        assert.equals(14, tom.velocidadMaxima())
+
+        tom.comer(nibbles)
+        assert.equals(137, tom.energia())
+        assert.equals(18.7, tom.velocidadMaxima())
+
+        jerry.cumplirAnios() // Jerry cumple 3 años y pasa a pesar 60 
+        tom.comer(jerry)
+        assert.equals(209, tom.energia())
+        assert.equals(25.9, tom.velocidadMaxima())
+
+        // 6. si corre 38 metros su velocidad pasa a ser 24 (su energia es 190) 
+        tom.correr(38)
+        assert.equals(190, tom.energia())
+        assert.equals(24, tom.velocidadMaxima())
+    }
+
+    test "Parte 2 - Poder cazar o no segun la distancia" {
+        // Con energía inicial de 50:
+        // A 120 metros de distancia, Tom gastaría 60 de energía (120/2) 
+        // Como 60 no es menor que su energía actual de 50, NO puede cazarlo  s
+        assert.notThat(tom.puedeCazar(120))
+        
+        // Si intenta cazarlo igual, no debería correr ni comer (la energía queda en 50)
+        tom.cazar(jerry, 120)
+        assert.equals(50, tom.energia())
+
+        // A 20 metros, correr le cuesta 10 de energía (20/2) 
+        // Como 10 < 50, SÍ puede cazarlo [2].
+        assert.that(tom.puedeCazar(20))
+        
+        // Realiza la caza: corre 20 metros (baja a 40 de energía) y come a Jerry (+12 + 40 de peso de Jerry) [1, 2]
+        tom.cazar(jerry, 20)
+        // 50 (inicial) - 10 (correr) + 12 (comer) + 40 (peso de Jerry) = 92
+        assert.equals(92, tom.energia())
+    }
+
+    test "Parte 3 - Polimorfismo con el Raton Perez" {
+        // El ratón Pérez inicia pesando 55 
+        assert.equals(55, perez.peso())
+
+        // Tom puede comer a Pérez de forma polimorf
+        tom.comer(perez) // 50inicial + 12 + 55 (peso de Perez) = 117
+        assert.equals(117, tom.energia())
+    }
+}
